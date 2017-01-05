@@ -3,25 +3,26 @@
 const nodemailer = require('nodemailer');
 const {logger} = require('./utilities/logger');
 
-// stored in `.env` -- never store passwords, api keys
-// etc. inside source code
-const {SMTP_URL} = process.env;
+const sendEmail = (emailData) => {
 
+  let connection= {
+    host:process.env.SMTP_HOST,
+    port:parseInt(process.env.SMTP_PORT,10),
+    secure: Boolean(process.env.SMTP_SECURE),
+    auth: {
+      user:process.env.SMTP_USER,
+      pass:process.env.SMTP_PASSWORD
+    },
+    logger:Boolean(process.env.SMTP_LOGGING)
+  };
 
-// `emailData` is an object that looks like this:
-// {
-//  from: "foo@bar.com",
-//  to: "bizz@bang.com, marco@polo.com",
-//  subject: "Hello world",
-//  text: "Plain text content",
-//  html: "<p>HTML version</p>"
-// }
-const sendEmail = (emailData, smtpUrl=SMTP_URL) => {
-  const transporter = nodemailer.createTransport(SMTP_URL);
+  const transporter = nodemailer.createTransport(connection);
   logger.info(`Attempting to send email from ${emailData.from}`);
-  return transporter
-    .sendMail(emailData)
-    .then(info => console.log(`Message sent: ${info.response}`))
+  
+  transporter.sendMail(emailData)
+    .then(info => {
+      console.log(`Message sent: ${info.response}`)
+    })
     .catch(err => console.log(`Problem sending email: ${err}`));
 }
 

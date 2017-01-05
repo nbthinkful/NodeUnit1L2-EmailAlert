@@ -9,7 +9,14 @@ For the email sending feature to work, you need to set four configuration variab
 ALERT_FROM_EMAIL='account-name@gmail.com'
 ALERT_FROM_NAME='SERVICE ALERTS'
 ALERT_TO_EMAIL='service-alert-recipient@gmail.com'
-SMTP_URL='smtps://account-name@gmail.com:password@smtp.gmail.com'
+#SMTP_URL='smtps://account-name@gmail.com:password@smtp.gmail.com'
+
+SMTP_HOST='smtp.gmail.com'
+SMTP_PORT=465
+SMTP_SECURE=true
+SMTP_USER='<account-name>@gmail.com'
+SMTP_PASSWORD='<account-password>'
+SMTP_LOGGING=true
 ```
 
 DO NOT hard code these into your source code. They should be set as environment
